@@ -1,0 +1,4 @@
+*.mod
+kadane_sequential
+kadane_openmp
+kadane_mpi
