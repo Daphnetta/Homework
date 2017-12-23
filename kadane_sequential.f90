@@ -1,43 +1,31 @@
-module kadane_sequential
-	implicit none
-	contains
-		subroutine kadane
-			integer(4) ::maximum, t, r1, c1, r2, c2, g, N, M, h, i, j
-			integer(4), allocatable :: a (:,:)  !integer(4), dimension(:,:), allocatable :: a
-			integer(4), allocatable :: p (:)    !integer(4), dimension(:  ), allocatable :: p
-			real :: r
-			
-			write(*,*) "N, M = ?" 
-			read(*,*) N, M
-			allocate(a(N,M))
-			allocate(p(M))
-			call random_seed
-			do i = 1, N
-				do j = 1, M
-					call random_number(r)
-					a(i,j) = floor(r * 100-50) 
-					write (*,"(I5)", advance="no") a(i,j)
-				end do
-				write (*,*)
-			end do
-			maximum = 0; r1  = 0; c1  = 0; r2  = 0; c2  = 0
-			do g = 1, N
-				do j = 1, M
-					p(j) = 0
-				end do
-				do i = g, N
-					t = 0; h = 1
-					do j = 1 , M
-						p(j) = p(j) + a(i,j); t = t+p(j)
-						if (t>maximum) then
-							maximum=t; r1=g; c1=h; r2=i; c2=j
-						else if (t<=0) then
-							t=0; h =j+1
-						end if
-					end do
-				end do
-			end do
-			write (*,*) "Sum is:", maximum
-			write (*,"(A,I3,A,I3,A,I3,A,I3,A)") "(",r1, ",",c1, ") (",r2, ",",c2,")"
-		end subroutine
-end module kadane_sequential
+module Homework
+  implicit none
+  contains
+    subroutine FindMaxCoordinates(A, x1, y1, x2, y2)
+      real(8), allocatable, intent(in) :: A (:,:)
+      integer(4), intent(out) :: x1, y1, x2, y2
+      real(8), allocatable :: p (:)
+      integer(4) :: h, g, i, j, N, M
+      real(8) :: maximum, t
+      N = size(A, 1); M = size(A, 2)
+      allocate(p(M))
+      
+      maximum = 0; x1  = 0; y1  = 0; x2  = 0; y2  = 0
+      do g = 1, N
+        do j = 1, M
+          p(j) = 0
+        end do
+        do i = g, N
+          t = 0; h = 1
+          do j = 1 , M
+            p(j) = p(j) + A(i,j); t = t+p(j)
+            if (t>maximum) then
+              maximum = t; x1 = g; y1 = h; x2 = i; y2 = j
+            else if (t<=0) then
+              t = 0; h = j+1
+            end if
+          end do
+        end do
+      end do
+    end subroutine
+end module
