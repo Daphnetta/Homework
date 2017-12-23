@@ -1,58 +1,46 @@
-module kadane_openmp
-	implicit none
-	contains
-		subroutine kadane
-			integer :: omp_get_thread_num, omp_get_num_threads
-			integer(4) :: maximum, t, r1, c1, r2, c2, g, N, M, h, i, j
-			integer(4) :: Mo, r1o, r2o, c1o, c2o
-			integer(4), allocatable :: a (:,:)  !integer(4), dimension(:,:), allocatable :: a
-			integer(4), allocatable :: p (:)    !integer(4), dimension(:  ), allocatable :: p
-			real :: r
-
-			write(*,*) "N, M = ?"
-			read(*,*) N, M
-			allocate(a(N,M))
-			call random_seed
-			do i = 1, N
-				do j = 1, M
-					call random_number(r)
-					a(i,j) = floor(r * 100-50)
-					write (*,"(I5)", advance="no") a(i,j)
-				end do
-				write (*,*)
-			end do
-			Mo       = 0; r1o = 0; c1o = 0; r2o = 0; c2o = 0
-			maximum  = 0; r1  = 0; c1  = 0; r2  = 0; c2  = 0
-!$omp parallel firstprivate(p,g,h,i,j,t,maximum,r1,r2,c1,c2) shared(a, Mo, r1o, r2o, c1o, c2o)
-			allocate(p(M))
+module Homework_OMP
+  implicit none
+  contains
+    subroutine FindMaxCoordinates(A, x1, y1, x2, y2)
+      integer :: omp_get_thread_num, omp_get_num_threads
+      real(8), allocatable, intent(in) :: A (:,:)
+      integer(4), intent(out) :: x1, y1, x2, y2
+      real(8), allocatable :: p (:)
+      integer(4) :: h, g, i, j, N, M, x1_thread, x2_thread, y1_thread, y2_thread
+      real(8) :: maximum, t, maximum_thread
+      N = size(A, 1); M = size(A, 2)
+      
+      maximum = 0; x1 = 0; y1 = 0; x2 = 0; y2 = 0
+      maximum_thread = 0; x1_thread  = 0; y1_thread  = 0; x2_thread  = 0; y2_thread  = 0
+!$omp parallel firstprivate(p, g, h, i, j, t, maximum_thread, x1_thread, x2_thread, y1_thread, y2_thread) shared(A, maximum, x1, x2, y1, y2)
+      allocate(p(M))
 !$omp do schedule(dynamic, 1)
-			do g = 1, N
-				do j = 1, M
-					p(j) = 0
-				end do
-				do i = g, N
-					t = 0; h = 1
-					do j = 1 , M
-						p(j) = p(j) + a(i,j); t = t+p(j)
-						if (t>maximum) then
-							maximum=t; r1=g; c1=h; r2=i; c2=j
-						else if (t<=0) then
-							t=0; h =j+1
-						end if
-					end do
-				end do
-			end do
+      do g = 1, N
+        do j = 1, M
+          p(j) = 0
+        end do
+        do i = g, N
+          t = 0; h = 1
+          do j = 1 , M
+            p(j) = p(j) + A(i,j); t = t+p(j)
+            if (t>maximum_thread) then
+              maximum_thread = t; x1_thread = g; y1_thread = h; x2_thread = i; y2_thread = j
+            else if (t<=0) then
+              t = 0; h = j+1
+            end if
+          end do
+        end do
+      end do
 !$omp end do
-!		write (*,*) "#", omp_get_thread_num(), M, r1, c1, r2, c2
 !$omp critical
-			if(maximum>Mo) then
-				Mo = maximum
-				c1o = c1; c2o = c2;
-				r1o = r1; r2o = r2;
-			endif
+
+      if(maximum_thread>maximum) then
+        maximum = maximum_thread
+        x1 = x1_thread; x2 = x2_thread;
+        y1 = y1_thread; y2 = y2_thread;
+      endif
 !$omp end critical
 !$omp end parallel
-			write (*,*) "Sum is:", Mo
-			write (*,"(A,I3,A,I3,A,I3,A,I3,A)") "(",r1o, ",",c1o, ") (",r2o, ",",c2o,")"
-		end subroutine
-end module kadane_openmp
+    
+    end subroutine
+end module
