@@ -12,7 +12,7 @@ module Homework_OMP
       
       maximum = 0; x1 = 0; y1 = 0; x2 = 0; y2 = 0
       maximum_thread = 0; x1_thread  = 0; y1_thread  = 0; x2_thread  = 0; y2_thread  = 0
-!$omp parallel firstprivate(p, g, h, i, j, t, maximum_thread, x1_thread, x2_thread, y1_thread, y2_thread) shared(A, maximum, x1, x2, y1, y2)
+!$omp parallel firstprivate(p,g,h,i,j,t,maximum_thread,x1_thread,x2_thread,y1_thread,y2_thread) shared(A,maximum,x1,x2,y1,y2)
       allocate(p(M))
 !$omp do schedule(dynamic, 1)
       do g = 1, N
