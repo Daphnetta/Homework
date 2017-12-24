@@ -1,5 +1,5 @@
 program main_kadane_mpi
-  use Homework_MPI
+  use Homework
   use mpi
   real(8), allocatable :: A (:,:)
   integer(4) :: x1, y1, x2, y2, i ,j, N, M
@@ -11,7 +11,7 @@ program main_kadane_mpi
   call mpi_comm_rank(mpi_comm_world, mpi_rank, mpi_err)
 
   if (mpi_rank == mpi_master) then
-     write(*,*) "N, M = ?" 
+     write(*,*) "N, M = ?"
      read(*,*) N, M
   end if
   call mpi_bcast(N, 1, mpi_integer, mpi_master, mpi_comm_world, mpi_err)
@@ -22,7 +22,7 @@ program main_kadane_mpi
      do i = 1, N
         do j = 1, M
            call random_number(r)
-           A(i,j) = r * 100-50 
+           A(i,j) = r * 100-50
            write (*,"(F5.1,A)", advance="no") A(i,j), " "
         end do
         write (*,*)
