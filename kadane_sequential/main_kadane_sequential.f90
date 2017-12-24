@@ -3,7 +3,7 @@ program main_kadane_sequential
   real(8), allocatable :: A (:,:)
   integer(4) :: x1, y1, x2, y2, i ,j, N, M
   real(8) :: r
-  write(*,*) "N, M = ?" 
+  write(*,*) "N, M = ?"
   read(*,*) N, M
   allocate(A(N,M))
 
@@ -15,7 +15,7 @@ program main_kadane_sequential
       write(*,"(F5.1,A)", advance="no") A(i,j), " "
     end do
     write(*,*)
-  end do  
+  end do
   call FindMaxCoordinates(A, x1, y1, x2, y2)
   write (*,"(A,I3,A,I3,A,I3,A,I3,A)") "(",x1, ",",y1, ") (",x2, ",",y2,")"
 end program
