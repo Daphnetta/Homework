@@ -34,5 +34,6 @@ program main_kadane_mpi
   if(mpi_rank == mpi_master) then
      write (*,"(A,I3,A,I3,A,I3,A,I3,A)") "(",x1, ",",y1, ") (",x2, ",",y2,")"
   end if
+  deallocate(A)
   call mpi_finalize(mpi_err)
 end program

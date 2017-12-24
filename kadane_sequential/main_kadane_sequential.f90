@@ -18,4 +18,5 @@ program main_kadane_sequential
   end do
   call FindMaxCoordinates(A, x1, y1, x2, y2)
   write (*,"(A,I3,A,I3,A,I3,A,I3,A)") "(",x1, ",",y1, ") (",x2, ",",y2,")"
+  deallocate(A)
 end program

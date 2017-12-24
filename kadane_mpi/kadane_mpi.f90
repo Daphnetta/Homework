@@ -38,9 +38,11 @@ module Homework
       end do
       call mpi_allgather(maximum, 1, mpi_real8, maximums, 1, mpi_real8, mpi_comm_world, mpi_err)
       mpi_correct = maxloc(maximums, 1) - 1
-      call mpi_bcast(x1, 1, mpi_real8, mpi_correct, mpi_comm_world, mpi_err)
-      call mpi_bcast(y1, 1, mpi_real8, mpi_correct, mpi_comm_world, mpi_err)
-      call mpi_bcast(x2, 1, mpi_real8, mpi_correct, mpi_comm_world, mpi_err)
-      call mpi_bcast(y2, 1, mpi_real8, mpi_correct, mpi_comm_world, mpi_err)
+      call mpi_bcast(x1, 1, mpi_integer4, mpi_correct, mpi_comm_world, mpi_err)
+      call mpi_bcast(y1, 1, mpi_integer4, mpi_correct, mpi_comm_world, mpi_err)
+      call mpi_bcast(x2, 1, mpi_integer4, mpi_correct, mpi_comm_world, mpi_err)
+      call mpi_bcast(y2, 1, mpi_integer4, mpi_correct, mpi_comm_world, mpi_err)
+      deallocate(p)
+      deallocate(maximums)
     end subroutine
 end module

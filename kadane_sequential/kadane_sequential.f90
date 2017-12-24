@@ -26,5 +26,6 @@ module Homework
           end do
         end do
       end do
+      deallocate(p)
     end subroutine
 end module

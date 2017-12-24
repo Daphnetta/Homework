@@ -1,9 +1,9 @@
 module Homework
+  use omp_lib
   contains
     subroutine FindMaxCoordinates(A, x1, y1, x2, y2)
       real(8), intent(in), dimension(:,:) :: A
       integer(4), intent(out) :: x1, y1, x2, y2
-      integer :: omp_get_thread_num, omp_get_num_threads
       real(8), allocatable :: p (:)
       integer(4) :: h, g, i, j, N, M, x1_thread, x2_thread, y1_thread, y2_thread
       real(8) :: maximum, temporary_sum, maximum_thread
@@ -40,7 +40,7 @@ module Homework
         y1 = y1_thread; y2 = y2_thread;
       endif
 !$omp end critical
+      deallocate(p)
 !$omp end parallel
-
     end subroutine
 end module
