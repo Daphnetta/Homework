@@ -12,33 +12,33 @@ EXP=f90
 .SILENT:
 all: seq omp mpi
 
-seq: $(SEQ).$(EXP) main_$(SEQ).$(EXP)
-	$(COMPILER)          -o "$(SEQ)" "$(SEQ).$(EXP)" "main_$(SEQ).$(EXP)"
+seq: $(SEQ)/$(SEQ).$(EXP) $(SEQ)/main_$(SEQ).$(EXP)
+	cd $(SEQ); $(COMPILER)          -o "$(SEQ)" "$(SEQ).$(EXP)" "main_$(SEQ).$(EXP)"
 
-omp: $(OMP).$(EXP) main_$(OMP).$(EXP)
-	$(COMPILER) -fopenmp -o "$(OMP)" "$(OMP).$(EXP)" "main_$(OMP).$(EXP)"
+omp: $(OMP)/$(OMP).$(EXP) $(OMP)/main_$(OMP).$(EXP)
+	cd $(OMP); $(COMPILER) -fopenmp -o "$(OMP)" "$(OMP).$(EXP)" "main_$(OMP).$(EXP)"
 
-mpi: $(MPI).$(EXP) main_$(MPI).$(EXP)
-	$(COMPILER_MPI)      -o "$(MPI)" "$(MPI).$(EXP)" "main_$(MPI).$(EXP)"
+mpi: $(MPI)/$(MPI).$(EXP) $(MPI)/main_$(MPI).$(EXP)
+	cd $(MPI); $(COMPILER_MPI)      -o "$(MPI)" "$(MPI).$(EXP)" "main_$(MPI).$(EXP)"
 
 .PHONY: run
 run: run_seq run_omp run_mpi
 
 .PHONY: run_seq
 run_seq: seq
-	./"$(SEQ)"
+	$(SEQ)/$(SEQ)
 
 .PHONY: run_omp
 run_omp: omp
-	./"$(OMP)"
+	$(OMP)/$(OMP)
 
 .PHONY: run_mpi
 run_mpi: mpi
-	mpirun ./"$(MPI)"
+	mpirun $(MPI)/$(MPI)
 
 .PHONY: clean
 clean:
-	rm -f "$(SEQ)"
-	rm -f "$(OMP)"
-	rm -f "$(MPI)"
-	rm -f *.mod
+	rm -f $(SEQ)/$(SEQ)
+	rm -f $(OMP)/$(OMP)
+	rm -f $(MPI)/$(MPI)
+	rm -f */*.mod
